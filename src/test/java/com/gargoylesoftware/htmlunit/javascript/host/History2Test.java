@@ -603,6 +603,90 @@ public class History2Test extends WebDriverTestCase {
         loadPageVerifyTitle2(html);
     }
 
+    @Test
+    @Alerts({"href=§§URL§§", "href=§§URL§§"})
+    public void replaceStateUndefinedObj() throws Exception {
+        final String html = "<html>\n"
+                + "<head>\n"
+                + "<script>\n"
+                + LOG_TITLE_FUNCTION
+                + "  function test() {\n"
+                + "    log('href=' + location.href);\n"
+                + "    window.history.replaceState(null, '', undefined);\n"
+                + "    log('href=' + location.href);\n"
+                + "  }\n"
+                + "</script>\n"
+                + "</head>\n"
+                + "<body onload='test()'>\n"
+                + "</body></html>";
+
+        expandExpectedAlertsVariables(URL_FIRST);
+        loadPageVerifyTitle2(html);
+    }
+
+    @Test
+    @Alerts({"href=§§URL§§", "href=§§URL§§undefined"})
+    public void replaceStateUndefinedString() throws Exception {
+        final String html = "<html>\n"
+                + "<head>\n"
+                + "<script>\n"
+                + LOG_TITLE_FUNCTION
+                + "  function test() {\n"
+                + "    log('href=' + location.href);\n"
+                + "    window.history.replaceState(null, '', 'undefined');\n"
+                + "    log('href=' + location.href);\n"
+                + "  }\n"
+                + "</script>\n"
+                + "</head>\n"
+                + "<body onload='test()'>\n"
+                + "</body></html>";
+
+        expandExpectedAlertsVariables(URL_FIRST);
+        loadPageVerifyTitle2(html);
+    }
+
+    @Test
+    @Alerts({"href=§§URL§§", "href=§§URL§§"})
+    public void pushStateUndefinedObj() throws Exception {
+        final String html = "<html>\n"
+                + "<head>\n"
+                + "<script>\n"
+                + LOG_TITLE_FUNCTION
+                + "  function test() {\n"
+                + "    log('href=' + location.href);\n"
+                + "    window.history.pushState(null, '', undefined);\n"
+                + "    log('href=' + location.href);\n"
+                + "  }\n"
+                + "</script>\n"
+                + "</head>\n"
+                + "<body onload='test()'>\n"
+                + "</body></html>";
+
+        expandExpectedAlertsVariables(URL_FIRST);
+        loadPageVerifyTitle2(html);
+    }
+
+    @Test
+    @Alerts({"href=§§URL§§", "href=§§URL§§undefined"})
+    public void pushStateUndefinedString() throws Exception {
+        final String html = "<html>\n"
+                + "<head>\n"
+                + "<script>\n"
+                + LOG_TITLE_FUNCTION
+                + "  function test() {\n"
+                + "    log('href=' + location.href);\n"
+                + "    window.history.pushState(null, '', 'undefined');\n"
+                + "    log('href=' + location.href);\n"
+                + "  }\n"
+                + "</script>\n"
+                + "</head>\n"
+                + "<body onload='test()'>\n"
+                + "</body></html>";
+
+        expandExpectedAlertsVariables(URL_FIRST);
+        loadPageVerifyTitle2(html);
+    }
+
     /**
      * @throws Exception if an error occurs
      */
