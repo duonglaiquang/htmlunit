@@ -14,17 +14,40 @@
  */
 package org.htmlunit.javascript.host.dom;
 
+import static org.htmlunit.html.DomElement.ATTRIBUTE_NOT_DEFINED;
+
+import java.util.List;
+
+import org.htmlunit.html.DomNode;
+import org.htmlunit.html.HtmlRadioButtonInput;
 import org.htmlunit.javascript.configuration.JsxClass;
 import org.htmlunit.javascript.configuration.JsxConstructor;
+import org.htmlunit.javascript.configuration.JsxGetter;
+import org.htmlunit.javascript.configuration.JsxSetter;
 
 /**
  * A JavaScript object for {@code RadioNodeList}.
  *
  * @author Ahmed Ashour
  * @author Ronald Brill
+ * @author Lai Quang Duong
  */
 @JsxClass
 public class RadioNodeList extends NodeList {
+
+    /**
+     * Creates an instance.
+     */
+    public RadioNodeList() {
+    }
+
+    public RadioNodeList(final DomNode domNode) {
+        super(domNode, true);
+    }
+
+    public RadioNodeList(final DomNode domNode, final List<DomNode> initialElements) {
+        super(domNode, initialElements);
+    }
 
     /**
      * JavaScript constructor.
@@ -33,5 +56,39 @@ public class RadioNodeList extends NodeList {
     @JsxConstructor
     public void jsConstructor() {
         super.jsConstructor();
+    }
+
+    /**
+     * @see <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#the-htmlformcontrolscollection-interface">HTML Standard</a>
+     */
+    @JsxGetter
+    public String getValue() {
+        for (DomNode node : getElements()) {
+            if (node instanceof HtmlRadioButtonInput && ((HtmlRadioButtonInput) node).isChecked()) {
+                String value = ((HtmlRadioButtonInput)node).getValueAttribute();
+                return value == ATTRIBUTE_NOT_DEFINED ? "on" : value;
+            }
+        }
+
+        return "";
+    }
+
+    /**
+     * @see <a href="https://html.spec.whatwg.org/multipage/common-dom-interfaces.html#the-htmlformcontrolscollection-interface">HTML Standard</a>
+     */
+    @JsxSetter
+    public void setValue(final String newValue) {
+        for (DomNode node : getElements()) {
+            if (node instanceof HtmlRadioButtonInput) {
+                String value = ((HtmlRadioButtonInput)node).getValueAttribute();
+                if (value == ATTRIBUTE_NOT_DEFINED) {
+                    value = "on";
+                }
+                if (newValue.equals(value)) {
+                    ((HtmlRadioButtonInput)node).setChecked(true);
+                    break;
+                }
+            }
+        }
     }
 }
